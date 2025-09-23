@@ -148,7 +148,7 @@ func validateFirstToken(cmd string) error {
 		"rm", "rmdir", "mkfs", "dd", "chmod", "chown", "mv", "shutdown", "reboot",
 		"halt", "poweroff", "init", "service", "systemctl", "mount", "umount", "kill",
 		"pkill", "killall", "crontab", "useradd", "userdel", "usermod", "groupadd",
-		"groupdel", "visudo", "sudo", "su", "scp", "sftp", "curl", "wget",
+		"groupdel", "visudo", "sudo", "su",
 	}
 
 	// 仅检查首 token，避免误杀比如 "echo rm"
