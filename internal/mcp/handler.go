@@ -39,6 +39,61 @@ func (s *sMcpHandler) GetList() []model.McpReg {
 			Fn: McpTool.RunSafeShellCommand,
 		},
 		{
+			Name:        "Md5Encode",
+			Description: "Calculate MD5 (hex lower-case) for a given text",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("text",
+					mcp.Required(),
+					mcp.Description("The text to hash"),
+				),
+			},
+			Fn: McpTool.Md5Encode,
+		},
+		{
+			Name:        "Base64Encode",
+			Description: "Encode text to Base64",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("text",
+					mcp.Required(),
+					mcp.Description("Plain text to encode"),
+				),
+			},
+			Fn: McpTool.Base64Encode,
+		},
+		{
+			Name:        "Base64Decode",
+			Description: "Decode Base64 string to text",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("data",
+					mcp.Required(),
+					mcp.Description("Base64-encoded data"),
+				),
+			},
+			Fn: McpTool.Base64Decode,
+		},
+		{
+			Name:        "JwtParse",
+			Description: "Parse a JWT without verifying signature; returns header and payload",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("token",
+					mcp.Required(),
+					mcp.Description("The JWT token"),
+				),
+			},
+			Fn: McpTool.JwtParse,
+		},
+		{
+			Name:        "JsonEncode",
+			Description: "Validate and compact a JSON string",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("raw",
+					mcp.Required(),
+					mcp.Description("Raw JSON string to validate and compact"),
+				),
+			},
+			Fn: McpTool.JsonEncode,
+		},
+		{
 			Name:        "SQL_Actuator",
 			Description: "Convert the user's requirements into SQL statements, execute the SQL statements, and return the execution results",
 			ToolOptions: []mcp.ToolOption{
