@@ -15,7 +15,7 @@ logger:
 database:
   default:
     type: "mysql"
-    link: "root:486213@tcp(127.0.0.1:3306)/pcc_shop_01?charset=utf8mb3&parseTime=true&loc=Local"
+    link: "root:xxx@tcp(127.0.0.1:3306)/xxx?charset=utf8mb3&parseTime=true&loc=Local"
     prefix: ""
     createdAt: "createTime"
     updatedAt: "updateTime"

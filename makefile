@@ -1,3 +1,3 @@
 
 build:
-	GOEXPERIMENT=greenteagc go build -o mcp-server
+	GOEXPERIMENT=greenteagc go build -ldflags="-s -w" -o mcp-server
