@@ -2,6 +2,11 @@
 
 一个用 Go 构建的 MCP（Model Context Protocol）服务端，基于 `mark3labs/mcp-go` 与 GoFrame v2。项目内置多种可即用的工具（Tools），可通过 MCP 客户端（如 Cursor、继续集成的 IDE/Agent）进行调用。
 
+  [![Go Version](https://img.shields.io/badge/Go-1.25+-blue)](#)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+  [![Stars](https://img.shields.io/github/stars/xuguodong/ai-mcp?style=social)](#)
+  [![Releases](https://img.shields.io/github/v/release/xuguodong/ai-mcp)](../../releases)
+
 ## 功能特性
 - **SSE 服务**：提供基于 Server-Sent Events 的 MCP 服务端；
 - **工具集合**：开箱即用的多种工具（见下方“内置工具”）；
