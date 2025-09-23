@@ -10,7 +10,7 @@ import (
 // ConvertAnyToMarkdownTable 将任意JSON数组转换为Markdown表格
 func ConvertAnyToMarkdownTable(data []map[string]interface{}) (string, error) {
 	if len(data) == 0 {
-		return "", fmt.Errorf("没有数据可转换")
+		return "", fmt.Errorf("已成功执行，但是无返回数据")
 	}
 
 	// 获取所有字段名（表头）
