@@ -22,6 +22,23 @@ var (
 func (s *sMcpHandler) GetList() []model.McpReg {
 	return []model.McpReg{
 		{
+			Name:        "RunSafeShellCommand",
+			Description: "Execute a terminal command safely with blacklist, operator bans and timeout; supports limited pipes (|)",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("command",
+					mcp.Required(),
+					mcp.Description("The terminal command to execute (supports up to 3 pipes, no redirects/logic ops)"),
+				),
+				mcp.WithString("timeoutSeconds",
+					mcp.Description("Timeout seconds (default 10, max 60)"),
+				),
+				mcp.WithString("cwd",
+					mcp.Description("Optional working directory"),
+				),
+			},
+			Fn: McpTool.RunSafeShellCommand,
+		},
+		{
 			Name:        "SQL_Actuator",
 			Description: "Convert the user's requirements into SQL statements, execute the SQL statements, and return the execution results",
 			ToolOptions: []mcp.ToolOption{
