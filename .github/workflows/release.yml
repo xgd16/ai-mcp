@@ -1,9 +1,8 @@
 name: Release Build
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
@@ -92,28 +91,24 @@ jobs:
         name: ${{ matrix.artifact_name }}
         path: ${{ matrix.artifact_name }}.zip
 
-  create-release:
+  upload-assets:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'release'
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Download all artifacts
       uses: actions/download-artifact@v4
       with:
         path: ./artifacts
 
-    - name: Create Release
+    - name: Upload Release Assets
       uses: softprops/action-gh-release@v1
       with:
         files: |
           ./artifacts/ai-mcp-linux-amd64/ai-mcp-linux-amd64.zip
           ./artifacts/ai-mcp-windows-amd64/ai-mcp-windows-amd64.zip
           ./artifacts/ai-mcp-darwin-amd64/ai-mcp-darwin-amd64.zip
-        generate_release_notes: true
         draft: false
         prerelease: false
       env:
