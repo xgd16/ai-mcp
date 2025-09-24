@@ -42,6 +42,7 @@ jobs:
         go build -ldflags="-s -w" -o mcp-server${{ matrix.goos == 'windows' && '.exe' || '' }}
 
     - name: Create release package
+      shell: bash
       run: |
         # 创建临时目录
         mkdir -p release-package
