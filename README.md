@@ -13,7 +13,7 @@
 
   [![Go Version](https://img.shields.io/badge/Go-1.25+-blue)](#)
   [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-  [![Stars](https://img.shields.io/github/stars/xuguodong/ai-mcp?style=social)](#)
+  [![Stars](https://img.shields.io/github/stars/xgd16/ai-mcp?style=social)](#)
   [![Release Build](https://github.com/xgd16/ai-mcp/actions/workflows/release.yml/badge.svg)](https://github.com/xgd16/ai-mcp/actions/workflows/release.yml)
 
 ## 功能特性
