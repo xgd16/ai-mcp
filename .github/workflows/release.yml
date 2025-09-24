@@ -19,14 +19,34 @@ jobs:
             goos: linux
             goarch: amd64
             artifact_name: ai-mcp-linux-amd64
+          - os: ubuntu-latest
+            goos: linux
+            goarch: arm64
+            artifact_name: ai-mcp-linux-arm64
+          - os: ubuntu-latest
+            goos: linux
+            goarch: loong64
+            artifact_name: ai-mcp-linux-loongarch64
+          - os: ubuntu-latest
+            goos: linux
+            goarch: riscv64
+            artifact_name: ai-mcp-linux-riscv64
           - os: windows-latest
             goos: windows
             goarch: amd64
             artifact_name: ai-mcp-windows-amd64
+          - os: windows-latest
+            goos: windows
+            goarch: arm64
+            artifact_name: ai-mcp-windows-arm64
           - os: macos-latest
             goos: darwin
             goarch: amd64
             artifact_name: ai-mcp-darwin-amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
+            artifact_name: ai-mcp-darwin-arm64
 
     steps:
     - name: Checkout code
@@ -114,8 +134,13 @@ jobs:
       with:
         files: |
           ./artifacts/ai-mcp-linux-amd64/ai-mcp-linux-amd64.zip
+          ./artifacts/ai-mcp-linux-arm64/ai-mcp-linux-arm64.zip
+          ./artifacts/ai-mcp-linux-loongarch64/ai-mcp-linux-loongarch64.zip
+          ./artifacts/ai-mcp-linux-riscv64/ai-mcp-linux-riscv64.zip
           ./artifacts/ai-mcp-windows-amd64/ai-mcp-windows-amd64.zip
+          ./artifacts/ai-mcp-windows-arm64/ai-mcp-windows-arm64.zip
           ./artifacts/ai-mcp-darwin-amd64/ai-mcp-darwin-amd64.zip
+          ./artifacts/ai-mcp-darwin-arm64/ai-mcp-darwin-arm64.zip
         draft: false
         prerelease: false
       env:
