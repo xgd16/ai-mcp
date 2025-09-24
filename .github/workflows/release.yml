@@ -40,7 +40,7 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
         CGO_ENABLED: 0
       run: |
-        GOEXPERIMENT=greenteagc go build -ldflags="-s -w" -o mcp-server${{ matrix.goos == 'windows' && '.exe' || '' }}
+        go build -ldflags="-s -w" -o mcp-server${{ matrix.goos == 'windows' && '.exe' || '' }}
 
     - name: Create release package
       run: |
