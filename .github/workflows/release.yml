@@ -78,7 +78,7 @@ jobs:
         # 创建 zip 包
         if [ "${{ matrix.goos }}" = "windows" ]; then
           # Windows 使用 PowerShell 创建 zip
-          powershell Compress-Archive -Path release-package/* -DestinationPath ${{ matrix.artifact_name }}.zip
+          powershell "Compress-Archive -Path 'release-package/*' -DestinationPath '${{ matrix.artifact_name }}.zip' -Force"
         else
           # Linux/macOS 使用 zip 命令
           cd release-package
