@@ -1,0 +1,120 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+            artifact_name: ai-mcp-linux-amd64
+          - os: windows-latest
+            goos: windows
+            goarch: amd64
+            artifact_name: ai-mcp-windows-amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: amd64
+            artifact_name: ai-mcp-darwin-amd64
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.25.1'
+
+    - name: Build binary
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+        CGO_ENABLED: 0
+      run: |
+        GOEXPERIMENT=greenteagc go build -ldflags="-s -w" -o mcp-server${{ matrix.goos == 'windows' && '.exe' || '' }}
+
+    - name: Create release package
+      run: |
+        # 创建临时目录
+        mkdir -p release-package
+        
+        # 复制二进制文件
+        cp mcp-server${{ matrix.goos == 'windows' && '.exe' || '' }} release-package/
+        
+        # 复制配置文件
+        cp config.yaml release-package/
+        
+        # 创建 README 文件
+        cat > release-package/README.md << 'EOF'
+        # AI-MCP Server
+        
+        这是一个 AI-MCP 服务器程序。
+        
+        ## 使用方法
+        
+        1. 确保 config.yaml 配置文件正确配置
+        2. 运行二进制文件：
+           - Linux/macOS: `./mcp-server`
+           - Windows: `mcp-server.exe`
+        
+        ## 配置说明
+        
+        请根据您的环境修改 config.yaml 文件中的配置项。
+        
+        ## 日志
+        
+        日志文件将保存在 ./logs 目录下。
+        EOF
+        
+        # 创建 zip 包
+        if [ "${{ matrix.goos }}" = "windows" ]; then
+          # Windows 使用 PowerShell 创建 zip
+          powershell Compress-Archive -Path release-package/* -DestinationPath ${{ matrix.artifact_name }}.zip
+        else
+          # Linux/macOS 使用 zip 命令
+          cd release-package
+          zip -r ../${{ matrix.artifact_name }}.zip .
+          cd ..
+        fi
+
+    - name: Upload release artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: ${{ matrix.artifact_name }}.zip
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./artifacts
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ./artifacts/ai-mcp-linux-amd64/ai-mcp-linux-amd64.zip
+          ./artifacts/ai-mcp-windows-amd64/ai-mcp-windows-amd64.zip
+          ./artifacts/ai-mcp-darwin-amd64/ai-mcp-darwin-amd64.zip
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
