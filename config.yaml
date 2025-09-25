@@ -20,3 +20,7 @@ database:
     createdAt: "createTime"
     updatedAt: "updateTime"
     debug: true
+
+# 数据库操作配置
+dbConfig:
+  readonly: false  # 是否启用只读模式，true表示只允许查询操作，false表示允许所有操作

@@ -20,6 +20,18 @@ func (s *sMcpTool) ExecSql(ctx context.Context, request mcp.CallToolRequest) (ou
 		err = errors.New("sql is required")
 		return
 	}
+
+	// 检查是否启用只读模式
+	if consts.Config.DbConfig != nil && consts.Config.DbConfig.Readonly {
+		if !isReadOnlySQL(sql) {
+			errMsg := "数据库当前处于只读模式，只允许执行查询操作（SELECT语句）"
+			consts.Logger.Warning(ctx, errMsg)
+			out = mcp.NewToolResultText(errMsg)
+			err = nil
+			return
+		}
+	}
+
 	sqlOut, err := g.DB().Query(ctx, sql)
 	if err != nil {
 		outStr := fmt.Sprintf("数据库执行失败：%s", err.Error())
@@ -210,4 +222,38 @@ func getSizeQuery(dbType, dbname string) string {
 	default:
 		return ""
 	}
+}
+
+// isReadOnlySQL 检查SQL语句是否为只读操作
+func isReadOnlySQL(sql string) bool {
+	// 去除前后空格并转换为大写
+	sql = strings.TrimSpace(strings.ToUpper(sql))
+
+	// 检查是否以SELECT开头（包括WITH语句，因为WITH通常用于查询）
+	if strings.HasPrefix(sql, "SELECT") || strings.HasPrefix(sql, "WITH") {
+		return true
+	}
+
+	// 检查是否为SHOW语句（MySQL的SHOW语句是只读的）
+	if strings.HasPrefix(sql, "SHOW") {
+		return true
+	}
+
+	// 检查是否为DESCRIBE或DESC语句
+	if strings.HasPrefix(sql, "DESCRIBE") || strings.HasPrefix(sql, "DESC") {
+		return true
+	}
+
+	// 检查是否为EXPLAIN语句
+	if strings.HasPrefix(sql, "EXPLAIN") {
+		return true
+	}
+
+	// 检查是否为PRAGMA语句（SQLite的PRAGMA语句通常是只读的）
+	if strings.HasPrefix(sql, "PRAGMA") {
+		return true
+	}
+
+	// 其他情况都认为是非只读操作
+	return false
 }
