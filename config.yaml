@@ -21,6 +21,13 @@ database:
     updatedAt: "updateTime"
     debug: true
 
+# https://goframe.org/docs/components/contrib-nosql-redis-config
+redis:
+  default:
+    address: "127.0.0.1:6379"
+    db: 2
+    pass:
+
 # 数据库操作配置
 dbConfig:
   readonly: false  # 是否启用只读模式，true表示只允许查询操作，false表示允许所有操作

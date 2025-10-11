@@ -151,6 +151,20 @@ func (s *sMcpHandler) GetList() []model.McpReg {
 			},
 			Fn: McpTool.GetDatabaseInfo,
 		},
+		{
+			Name:        "ExecRedisCommand",
+			Description: "Execute a Redis command and return the result",
+			ToolOptions: []mcp.ToolOption{
+				mcp.WithString("command",
+					mcp.Required(),
+					mcp.Description("The Redis command to execute (e.g., 'GET', 'SET', 'HGETALL', 'KEYS')"),
+				),
+				mcp.WithString("args",
+					mcp.Description("Command arguments as JSON array (e.g., '[\"key\"]', '[\"key\", \"value\"]')"),
+				),
+			},
+			Fn: McpTool.ExecRedisCommand,
+		},
 	}
 }
 
